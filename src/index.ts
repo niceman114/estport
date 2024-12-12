@@ -4,7 +4,7 @@ import {exec} from 'child_process';
 import packageJson from '../package.json';
 
 const usage: string = `Usage:
-    ${packageJson.name} <PORT=0-65535>
+    ${packageJson.name} <PORT=0-65535> [--output=json]
     ${packageJson.name} --version
     ${packageJson.name} [--help | -h]
 
@@ -14,6 +14,7 @@ Description:
 
 Examples:
     ${packageJson.name} 3000
+    ${packageJson.name} 3000 --output=json
     ${packageJson.name} --version
     ${packageJson.name} --help
 `;
@@ -31,7 +32,7 @@ const execAsync = (command: string) => new Promise<{ stdout: string; stderr: str
   });
 });
 
-const scan = async (port: string): Promise<void> => {
+const scan = async (port: string, outputJson: boolean): Promise<Array<{pid: string, command: string}>> => {
   const {stdout, stderr} = await execAsync(`lsof -t -i :${port}`);
 
   if (stderr) {
@@ -46,6 +47,8 @@ const scan = async (port: string): Promise<void> => {
     process.exit(0);
   }
 
+  const outputs: Array<{pid: string, command: string}> = [];
+
   for (const pid of pids) {
     const {stdout, stderr} = await execAsync(`ps -p ${pid} -o args=`);
     if (stderr) {
@@ -53,12 +56,15 @@ const scan = async (port: string): Promise<void> => {
       process.exit(1);
     }
 
-    console.info(`#${pids.indexOf(pid)} [${pid}] ${stdout}`);
+    outputs.push({pid: pid, command: stdout});
   }
+
+  return outputs;
 };
 
 (async () => {
   const option = process.argv[2];
+  const outputJson = process.argv.includes('--output=json');
 
   if (!option || option === '-h' || option === '--help') {
     showUsage();
@@ -76,5 +82,13 @@ const scan = async (port: string): Promise<void> => {
     process.exit(1);
   }
 
-  await scan(option);
+  const outputs = await scan(option, outputJson);
+
+  if (outputJson) {
+    console.info(JSON.stringify(outputs));
+  } else {
+    outputs.forEach((output, index) => {
+      console.info(`#${index} [${output.pid}] ${output.command}`);
+    });
+  }
 })();

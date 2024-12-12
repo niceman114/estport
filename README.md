@@ -16,6 +16,12 @@ Scan established port
 estport <PORT=0-65535>
 ```
 
+Scan established port and output as json string
+
+```bash
+estport <PORT=0-65535> --output=json
+```
+
 Check version
 
 ```bash
@@ -36,4 +42,20 @@ Scan established connections on port 3000
 > estport 3000
 #0 [2479] /Applications/Google Chrome.app/{...}/Google Chrome Helper --type=utility {...}
 #1 [98169] /opt/homebrew/Cellar/node@22/22.11.0/bin/node /{...}/node_modules/react-scripts/scripts/start.js
+```
+
+Scan established connections on port 3000 and output as json string
+
+```bash 
+> estport 3000 --output=json | jq
+[
+  {
+    "pid": "2479",
+    "command": "/Applications/Google Chrome.app/{...}/Google Chrome Helper --type=utility {...}"
+  },
+  {
+    "pid": "98169",
+    "command": "/opt/homebrew/Cellar/node@22/22.11.0/bin/node /{...}/node_modules/react-scripts/scripts/start.js"
+  }
+]
 ```
