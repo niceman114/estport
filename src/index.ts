@@ -32,7 +32,7 @@ const execAsync = (command: string) => new Promise<{ stdout: string; stderr: str
   });
 });
 
-const scan = async (port: string, outputJson: boolean): Promise<Array<{pid: string, command: string}>> => {
+const scan = async (port: string): Promise<Array<{pid: string, command: string}>> => {
   const delimiter = '  '; // 2 spaces
   const {stdout, stderr} = await execAsync(`lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`);
 
@@ -74,7 +74,7 @@ const scan = async (port: string, outputJson: boolean): Promise<Array<{pid: stri
     process.exit(1);
   }
 
-  const outputs = await scan(option, outputJson);
+  const outputs = await scan(option);
 
   if (outputJson) {
     console.info(JSON.stringify(outputs));
