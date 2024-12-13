@@ -33,31 +33,23 @@ const execAsync = (command: string) => new Promise<{ stdout: string; stderr: str
 });
 
 const scan = async (port: string, outputJson: boolean): Promise<Array<{pid: string, command: string}>> => {
-  const {stdout, stderr} = await execAsync(`lsof -t -i :${port}`);
+  const delimiter = '  '; // 2 spaces
+  const {stdout, stderr} = await execAsync(`lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`);
 
   if (stderr) {
     console.error(stderr);
     process.exit(1);
   }
 
-  const pids = stdout.split('\n').filter(pid => pid !== '');
-
-  if (pids.length === 0) {
-    console.log(`Nothing on port ${port}`);
-    process.exit(0);
-  }
-
   const outputs: Array<{pid: string, command: string}> = [];
 
-  for (const pid of pids) {
-    const {stdout, stderr} = await execAsync(`ps -p ${pid} -o args=`);
-    if (stderr) {
-      console.error(stderr);
-      process.exit(1);
-    }
-
-    outputs.push({pid: pid, command: stdout});
-  }
+  stdout.split('\n').filter(line => line.length > 0).forEach((line: string) => {
+    const [head, ...tail] = line.split(delimiter);
+    outputs.push({
+      pid : head,
+      command : tail.join(delimiter)
+    });
+  });
 
   return outputs;
 };
@@ -86,6 +78,8 @@ const scan = async (port: string, outputJson: boolean): Promise<Array<{pid: stri
 
   if (outputJson) {
     console.info(JSON.stringify(outputs));
+  } else if (outputs.length == 0) {
+    console.log(`Nothing on port ${option}`);
   } else {
     outputs.forEach((output, index) => {
       console.info(`#${index} [${output.pid}] ${output.command}`);
