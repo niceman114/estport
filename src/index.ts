@@ -2,6 +2,7 @@
 
 import {exec} from 'child_process';
 import packageJson from '../package.json';
+import {Process, ScanResult} from "./types";
 
 const usage: string = `Usage:
     ${packageJson.name} <PORT=0-65535> [--output=json]
@@ -32,26 +33,32 @@ const execAsync = (command: string) => new Promise<{ stdout: string; stderr: str
   });
 });
 
-const scan = async (port: string): Promise<Array<{pid: string, command: string}>> => {
+const scan = async (port: string): Promise<ScanResult> => {
   const delimiter = '  '; // 2 spaces
   const {stdout, stderr} = await execAsync(`lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`);
 
   if (stderr) {
-    console.error(stderr);
-    process.exit(1);
+    return {
+      success: false,
+      message: stderr,
+      data: [],
+    };
   }
 
-  const outputs: Array<{pid: string, command: string}> = [];
+  const outputs: Array<Process> = [];
 
   stdout.split('\n').filter(line => line.length > 0).forEach((line: string) => {
     const [head, ...tail] = line.split(delimiter);
     outputs.push({
       pid : head,
-      command : tail.join(delimiter)
+      command : tail.join(delimiter),
     });
   });
 
-  return outputs;
+  return {
+    success: true,
+    data: outputs,
+  };
 };
 
 (async () => {
@@ -74,7 +81,14 @@ const scan = async (port: string): Promise<Array<{pid: string, command: string}>
     process.exit(1);
   }
 
-  const outputs = await scan(option);
+  const scanResult = await scan(option);
+
+  if (!scanResult.success) {
+    console.error(scanResult.message);
+    process.exit(1);
+  }
+
+  const outputs = scanResult.data;
 
   if (outputJson) {
     console.info(JSON.stringify(outputs));
