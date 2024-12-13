@@ -1,6 +1,6 @@
 {
   "name": "estport",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple established port checker",
   "repository": "https://github.com/niceman114/estport",
   "homepage": "https://github.com/niceman114/estport#readme",
