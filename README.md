@@ -1,5 +1,9 @@
 # estport
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fniceman114%2Festport&title_bg=%23555555&icon=awesomelists.svg&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![NPM Version](https://img.shields.io/npm/v/estport.svg?logo=npm)](https://www.npmjs.com/package/estport)
+[![NPM Downloads](https://img.shields.io/npm/dt/estport?logo=npm)](https://www.npmjs.com/package/estport)
+
 A simple CLI tool to check established connections on a specific port and display the PID and the full path of the process that initiated the connection.
 
 ## How to install
