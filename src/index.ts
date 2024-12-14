@@ -4,6 +4,10 @@ import {exec} from 'child_process';
 import packageJson from '../package.json';
 import {Process, ScanResult} from "./types";
 
+// NOTE: Constants defined without importing the os module
+const isWindows = process.platform === "win32";
+const EOL = isWindows ? '\r\n' : '\n';
+
 const usage: string = `Usage:
     ${packageJson.name} <PORT=0-65535> [--output=json]
     ${packageJson.name} --version
@@ -24,8 +28,23 @@ const showUsage = (): void => {
   console.info(usage.trim());
 };
 
+const makePortScanCommand = (port: string, delimiter: string): string => {
+  if (isWindows) {
+    return `(Get-NetTCPConnection -State Established -ErrorAction SilentlyContinue | Where-Object { ($_.LocalPort -eq ${port}) -or ($_.RemotePort -eq ${port} -and ($_.RemoteAddress -eq '127.0.0.1' -or $_.RemoteAddress -eq '::1')) } | Select-Object -ExpandProperty OwningProcess | ForEach-Object { "$_${delimiter}$((Get-Process -Id $_).Path)" })`;
+    // NOTE: also get the same result with the command below
+    // `netstat -anop tcp | Select-String -Pattern "^\\s*TCP\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s.*|.*\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s" | Select-String "ESTABLISHED" | ForEach-Object { $_ -match '\\s+(\\d+)\\s*$' | Out-Null; "$($matches[1])${delimiter}$((Get-Process -Id $($matches[1])).Path)" }`;
+  }
+
+  return `lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`;
+}
+
 const execAsync = (command: string) => new Promise<{ stdout: string; stderr: string }>((resolve) => {
-  exec(command, (error, stdout, stderr) => {
+  let execOptions = {};
+  if (isWindows) {
+    execOptions = {shell: 'powershell'};
+  }
+
+  exec(command, execOptions, (error, stdout, stderr) => {
     resolve({
       stdout: stdout.trim(),
       stderr: error && stderr.trim().length > 0 ? error.message.trim() : stderr.trim()
@@ -35,7 +54,8 @@ const execAsync = (command: string) => new Promise<{ stdout: string; stderr: str
 
 const scan = async (port: string): Promise<ScanResult> => {
   const delimiter = '  '; // 2 spaces
-  const {stdout, stderr} = await execAsync(`lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`);
+  const portScanCommand = makePortScanCommand(port, delimiter);
+  const {stdout, stderr} = await execAsync(portScanCommand);
 
   if (stderr) {
     return {
@@ -47,7 +67,7 @@ const scan = async (port: string): Promise<ScanResult> => {
 
   const outputs: Array<Process> = [];
 
-  stdout.split('\n').filter(line => line.length > 0).forEach((line: string) => {
+  stdout.split(EOL).filter(line => line.length > 0).forEach((line: string) => {
     const [head, ...tail] = line.split(delimiter);
     outputs.push({
       pid : head,
