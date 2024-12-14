@@ -15,18 +15,25 @@
     "email": "niceman114@gmail.com"
   },
   "license": "MIT",
+  "auto-changelog": {
+    "commitLimit": false,
+    "ignoreCommitPattern": ":bookmark: v|WIP",
+    "template": "compact"
+  },
   "bin" : {
     "estport": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "changelog": "auto-changelog -p --hide-empty-releases --hide-credit"
   },
   "dependencies": {
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "auto-changelog": "^2.5.0"
   }
 }
