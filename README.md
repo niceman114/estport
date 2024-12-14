@@ -40,15 +40,21 @@ estport [--help | -h]
 
 ## Examples
 
-Scan established connections on port 3000
+### Scan established connections on port 3000
 
-```bash 
+```bash
 > estport 3000
 #0 [2479] /Applications/Google Chrome.app/{...}/Google Chrome Helper --type=utility {...}
 #1 [98169] /opt/homebrew/Cellar/node@22/22.11.0/bin/node /{...}/node_modules/react-scripts/scripts/start.js
 ```
+on Windows is below:
+```cmd 
+PS C:\WINDOWS> estport 3000
+#0 [2284] C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+#1 [16992] C:\Program Files\nodejs\node.exe
+```
 
-Scan established connections on port 3000 and output as json string
+### Scan established connections on port 3000 and output as json string
 
 ```bash 
 > estport 3000 --output=json | jq
@@ -63,3 +69,19 @@ Scan established connections on port 3000 and output as json string
   }
 ]
 ```
+
+on Windows is below:
+```cmd 
+PS C:\WINDOWS> estport 3000 --output=json | jq
+[
+  {
+    "pid": "2284",
+    "command": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+  },
+  {
+    "pid": "16992",
+    "command": "C:\\Program Files\\nodejs\\node.exe"
+  }
+]
+```
+
