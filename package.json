@@ -1,7 +1,7 @@
 {
   "name": "estport",
   "version": "1.2.0",
-  "description": "Simple established port checker",
+  "description": "Easy Scanner for Tasked ports",
   "repository": "https://github.com/niceman114/estport",
   "homepage": "https://github.com/niceman114/estport#readme",
   "keywords": [
