@@ -35,7 +35,7 @@ const makePortScanCommand = (port: string, delimiter: string): string => {
     // `netstat -anop tcp | Select-String -Pattern "^\\s*TCP\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s.*|.*\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s" | Select-String "ESTABLISHED" | ForEach-Object { $_ -match '\\s+(\\d+)\\s*$' | Out-Null; "$($matches[1])${delimiter}$((Get-Process -Id $($matches[1])).Path)" }`;
   }
 
-  return `lsof -t -i :${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`;
+  return `lsof -t -i TCP:${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`;
 }
 
 const execAsync = (command: string) => new Promise<{ stdout: string; stderr: string }>((resolve) => {
