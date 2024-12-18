@@ -2,8 +2,10 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.3.0](https://github.com/niceman114/estport/compare/v1.2.0...v1.3.0)
+#### [v1.3.1](https://github.com/niceman114/estport/compare/v1.2.0...v1.3.1)
 
+- :page_facing_up: Change LICENSE file extension [`0c41c9b`](https://github.com/niceman114/estport/commit/0c41c9b12bb9e56df30f5d876e6f2538e58d941a)
+- :memo: Update README.md [`1c417e5`](https://github.com/niceman114/estport/commit/1c417e5a2959bf9b1c4b15ec071f7d7eb99fdfd5)
 - :construction_worker: Update settings to generate CHANGELOG.md [`6ab129b`](https://github.com/niceman114/estport/commit/6ab129b09777edf9e35f72b71a824285a011d404)
 - :art: Format code [`8c7f89f`](https://github.com/niceman114/estport/commit/8c7f89ff2d6d7da4974dddfb813a6b56436d639c)
 - :sparkles: Remove established connection state filter in Windows [`1f52157`](https://github.com/niceman114/estport/commit/1f521578817114b6cef0dcae7b23b0e47e744759)
