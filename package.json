@@ -20,7 +20,7 @@
     "ignoreCommitPattern": ":bookmark: v|WIP",
     "template": "compact"
   },
-  "bin" : {
+  "bin": {
     "estport": "dist/index.js"
   },
   "scripts": {
@@ -28,12 +28,10 @@
     "dev": "ts-node src/index.ts",
     "changelog": "auto-changelog -p --hide-empty-releases --hide-credit"
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "auto-changelog": "^2.5.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2",
-    "auto-changelog": "^2.5.0"
+    "typescript": "^5.7.2"
   }
 }
