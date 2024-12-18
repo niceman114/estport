@@ -4,7 +4,7 @@
 [![NPM Version](https://img.shields.io/npm/v/estport.svg?logo=npm)](https://www.npmjs.com/package/estport)
 [![NPM Downloads](https://img.shields.io/npm/dt/estport?logo=npm)](https://www.npmjs.com/package/estport)
 
-A simple CLI tool to check established connections on a specific port and display the PID and the full path of the process that initiated the connection.
+A simple CLI tool that scans a specific port and displays the PID and full path of the process that initiated the TCP connection.
 
 ## How to install
 
@@ -14,18 +14,19 @@ npm install -g estport
 
 ## How to use
 
-Scan established port
+### Scan port
 
 ```bash
 estport <PORT=0-65535>
 ```
 
-Scan established port and output as json string
+### Scan port and display output as json string
 
 ```bash
 estport <PORT=0-65535> --output=json
 ```
 
+### Etc
 Check version
 
 ```bash
@@ -40,7 +41,7 @@ estport [--help | -h]
 
 ## Examples
 
-### Scan established connections on port 3000
+### Scan on port 3000
 
 ```bash
 > estport 3000
@@ -54,7 +55,7 @@ PS C:\WINDOWS> estport 3000
 #1 [16992] C:\Program Files\nodejs\node.exe
 ```
 
-### Scan established connections on port 3000 and output as json string
+### Scan on port 3000 and display output as json string
 
 ```bash 
 > estport 3000 --output=json | jq
@@ -84,4 +85,3 @@ PS C:\WINDOWS> estport 3000 --output=json | jq
   }
 ]
 ```
-
