@@ -1,5 +1,18 @@
 ### Changelog
 
+All notable changes to this project will be documented in this file. Dates are displayed in UTC.
+
+#### [v1.3.0](https://github.com/niceman114/estport/compare/v1.2.0...v1.3.0)
+
+- :construction_worker: Update settings to generate CHANGELOG.md [`6ab129b`](https://github.com/niceman114/estport/commit/6ab129b09777edf9e35f72b71a824285a011d404)
+- :art: Format code [`8c7f89f`](https://github.com/niceman114/estport/commit/8c7f89ff2d6d7da4974dddfb813a6b56436d639c)
+- :sparkles: Remove established connection state filter in Windows [`1f52157`](https://github.com/niceman114/estport/commit/1f521578817114b6cef0dcae7b23b0e47e744759)
+- :memo: Modified description in package.json [`06ab502`](https://github.com/niceman114/estport/commit/06ab5024fb2bd027ad29a2a075ce4a2a653d9835)
+- :bug: Fix port scan option when execute with 'lsof' command [`a55ba2c`](https://github.com/niceman114/estport/commit/a55ba2c7668522ed49c3e4684c430f9f8a364063)
+- :page_facing_up: Add LICENSE.md [`a946e63`](https://github.com/niceman114/estport/commit/a946e63f996ec7a1f4bec122c3af061ebad3cfb9)
+- :memo: Add CHANGELOG.md [`3d73b1e`](https://github.com/niceman114/estport/commit/3d73b1e901a16d51fb7d566cb25ad5e417becb43)
+- :construction_worker: Add settings to generate CHANGELOG.md [`e351496`](https://github.com/niceman114/estport/commit/e3514968e3913a4bf9adad91dea58cf4e8c4dd08)
+
 #### [v1.2.0](https://github.com/niceman114/estport/compare/v1.1.1...v1.2.0)
 
 > 15 December 2024
@@ -13,8 +26,8 @@
 > 13 December 2024
 
 - :recycle: Refactor for improved type safety and error handling [`53f4e06`](https://github.com/niceman114/estport/commit/53f4e064f7f1346aca84023ed23bfad55f329fac)
-- :zap: Improve performance [`a23ef0b`](https://github.com/niceman114/estport/commit/a23ef0b70839d9d820e58563601700434daebe02)
 - :fire: Remove unused code [`ddce55e`](https://github.com/niceman114/estport/commit/ddce55e7b61a9ef44848d4a0b13a5ca6745f1427)
+- :zap: Improve performance [`a23ef0b`](https://github.com/niceman114/estport/commit/a23ef0b70839d9d820e58563601700434daebe02)
 
 #### [v1.1.0](https://github.com/niceman114/estport/compare/v1.0.0...v1.1.0)
 
