@@ -30,9 +30,9 @@ const showUsage = (): void => {
 
 const makePortScanCommand = (port: string, delimiter: string): string => {
   if (isWindows) {
-    return `(Get-NetTCPConnection -State Established -ErrorAction SilentlyContinue | Where-Object { ($_.LocalPort -eq ${port}) -or ($_.RemotePort -eq ${port} -and ($_.RemoteAddress -eq '127.0.0.1' -or $_.RemoteAddress -eq '::1')) } | Select-Object -ExpandProperty OwningProcess | ForEach-Object { "$_${delimiter}$((Get-Process -Id $_).Path)" })`;
+    return `(Get-NetTCPConnection -ErrorAction SilentlyContinue | Where-Object { ($_.LocalPort -eq ${port}) -or ($_.RemotePort -eq ${port} -and ($_.RemoteAddress -eq '127.0.0.1' -or $_.RemoteAddress -eq '::1')) } | Select-Object -ExpandProperty OwningProcess | ForEach-Object { "$_${delimiter}$((Get-Process -Id $_).Path)" })`;
     // NOTE: also get the same result with the command below
-    // `netstat -anop tcp | Select-String -Pattern "^\\s*TCP\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s.*|.*\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s" | Select-String "ESTABLISHED" | ForEach-Object { $_ -match '\\s+(\\d+)\\s*$' | Out-Null; "$($matches[1])${delimiter}$((Get-Process -Id $($matches[1])).Path)" }`;
+    // `netstat -anop tcp | Select-String -Pattern "^\\s*TCP\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s.*|.*\\s+(127\\.0\\.0\\.1:${port}|::1:${port})\\s" | ForEach-Object { $_ -match '\\s+(\\d+)\\s*$' | Out-Null; "$($matches[1])${delimiter}$((Get-Process -Id $($matches[1])).Path)" }`;
   }
 
   return `lsof -t -i TCP:${port} | xargs -I {} sh -c 'echo "{}${delimiter}$(ps -o args= -p {})"'`;
